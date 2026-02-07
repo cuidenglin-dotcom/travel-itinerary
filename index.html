@@ -3,53 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宜兴·湖州 6日5晚休闲自驾行程</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+    <title>宜兴-湖州 6日5晚休闲自驾行程</title>
 
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Leaflet CSS & JS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'accent': '#00AEEF',
+                        'accent-dark': '#008CC2',
+                        'dark-bg': '#000000',
+                        'card-bg': '#0A0A0A',
+                        'card-hover': '#141414'
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
         * {
-            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: #000000;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
         }
 
-        .gradient-text {
-            background: linear-gradient(135deg, #00AEEF 0%, #0088CC 50%, #006699 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .card-glow {
-            box-shadow: 0 0 40px rgba(0, 174, 239, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A;
         }
 
-        .card-glow:hover {
-            box-shadow: 0 0 60px rgba(0, 174, 239, 0.25);
-            transform: scale(1.01) translateY(-3px);
+        ::-webkit-scrollbar-thumb {
+            background: #00AEEF;
+            border-radius: 4px;
         }
 
-        .mini-card {
-            background: linear-gradient(145deg, #0a0a0a 0%, #111111 100%);
-            border: 1px solid rgba(0, 174, 239, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .mini-card:hover {
-            border-color: rgba(0, 174, 239, 0.4);
-            background: linear-gradient(145deg, #0f0f0f 0%, #1a1a1a 100%);
-        }
-
+        /* Animation Classes */
         .fade-in-up {
             opacity: 0;
             transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
         .fade-in-up.visible {
@@ -57,997 +81,901 @@
             transform: translateY(0);
         }
 
-        .hero-gradient {
-            background: radial-gradient(ellipse at center top, rgba(0, 174, 239, 0.15) 0%, transparent 70%),
-                        radial-gradient(ellipse at center bottom, rgba(0, 102, 153, 0.1) 0%, transparent 70%);
+        /* Card Hover Effects */
+        .main-card {
+            background: linear-gradient(145deg, #0A0A0A 0%, #0F0F0F 100%);
+            border: 1px solid rgba(0, 174, 239, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .number-badge {
-            background: linear-gradient(135deg, #00AEEF 0%, #0088CC 100%);
+        .main-card:hover {
+            border-color: rgba(0, 174, 239, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 174, 239, 0.15);
+            transform: translateY(-4px) scale(1.01);
         }
 
-        .scroll-indicator {
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(10px); }
-        }
-
-        .stat-number {
-            text-shadow: 0 0 30px rgba(0, 174, 239, 0.5);
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #0a0a0a;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #00AEEF, #006699);
-            border-radius: 4px;
-        }
-
-        .day-card {
-            border-left: 3px solid transparent;
+        .mini-card {
+            background: linear-gradient(145deg, #0F0F0F 0%, #141414 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
         }
 
-        .day-card:hover {
-            border-left-color: #00AEEF;
+        .mini-card:hover {
+            border-color: rgba(0, 174, 239, 0.4);
+            box-shadow: 0 15px 30px -10px rgba(0, 174, 239, 0.2);
+            transform: translateY(-2px) scale(1.02);
         }
 
-        .table-custom {
+        /* Glowing Text */
+        .glow-text {
+            text-shadow: 0 0 30px rgba(0, 174, 239, 0.5);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            background: linear-gradient(90deg, #00AEEF 0%, #008CC2 100%);
+            box-shadow: 0 0 20px rgba(0, 174, 239, 0.5);
+        }
+
+        /* Table Styles */
+        .custom-table {
             border-collapse: separate;
             border-spacing: 0;
         }
 
-        .table-custom th {
-            background: linear-gradient(135deg, rgba(0, 174, 239, 0.2) 0%, rgba(0, 174, 239, 0.05) 100%);
-        border-bottom: 2px solid rgba(0, 174, 239, 0.3);
-        position: sticky;
-            top: 0;
-            backdrop-filter: blur(10px);
+        .custom-table th {
+            background: rgba(0, 174, 239, 0.1);
+            border-bottom: 2px solid #00AEEF;
         }
 
-        .table-custom td {
+        .custom-table td {
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .table-custom tr:hover td {
-            background: rgba(0, 174, 239, 0.03);
+        .custom-table tr:hover td {
+            background: rgba(0, 174, 239, 0.05);
         }
 
-        .restaurant-card {
-            background: linear-gradient(145deg, #0d0d0d 0%, #151515 100%);
-            border: 1px solid rgba(0, 174, 239, 0.15);
+        /* Map Container */
+        #map {
+            height: 400px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 174, 239, 0.2);
         }
 
-        .restaurant-card:hover {
-            border-color: rgba(0, 174, 239, 0.4);
+        /* Timeline Styles */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -21px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            background: #00AEEF;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 174, 239, 0.6);
         }
 
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
+        .timeline-line {
+            position: absolute;
+            left: -16px;
+            top: 20px;
+            bottom: -20px;
+            width: 2px;
+            background: linear-gradient(to bottom, #00AEEF, transparent);
         }
 
-        .accordion-content.open {
-            max-height: 5000px;
+        /* Day Badge */
+        .day-badge {
+            background: linear-gradient(135deg, #00AEEF 0%, #008CC2 100%);
+            box-shadow: 0 4px 15px rgba(0, 174, 239, 0.4);
         }
 
-        .tab-btn.active {
-            background: linear-gradient(135deg, #00AEEF 0%, #0088CC 100%);
-            color: white;
+        /* Highlight Number */
+        .highlight-number {
+            background: linear-gradient(135deg, #00AEEF 0%, #00C6FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Pulse Animation */
+        @keyframes pulse-accent {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 174, 239, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(0, 174, 239, 0); }
+        }
+
+        .pulse-accent {
+            animation: pulse-accent 2s infinite;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
         }
     </style>
 </head>
-<body class="text-white min-h-screen">
+<body>
     <!-- Hero Section -->
-    <section class="hero-gradient min-h-screen flex items-center justify-center relative overflow-hidden">
-        <div class="absolute inset-0 opacity-20">
-            <div class="absolute top-20 left-20 w-72 h-72 bg-[#00AEEF] rounded-full filter blur-[120px]"></div>
-            <div class="absolute bottom-20 right-20 w-96 h-96 bg-[#006699] rounded-full filter blur-[150px]"></div>
+    <header class="min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
+        <!-- Background Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-90"></div>
+
+        <!-- Animated Circles -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl float-animation"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/3 rounded-full blur-3xl float-animation" style="animation-delay: 1s;"></div>
         </div>
 
-        <div class="container mx-auto px-6 relative z-10 text-center fade-in-up">
-            <p class="text-[#00AEEF] text-lg mb-4 tracking-widest font-light">FAMILY TRIP</p>
-            <h1 class="text-5xl md:text-7xl font-black mb-6">
-                <span class="gradient-text">宜兴 · 湖州</span>
-            </h1>
-            <h2 class="text-2xl md:text-4xl font-bold text-gray-300 mb-8">6日5晚休闲自驾行程</h2>
-            <p class="text-gray-400 text-lg mb-4">6 老 · 2 大 · 1 小 | 2月14日 - 2月19日</p>
-            <p class="text-gray-500 text-sm mb-12">（正月初一 至 正月初三）</p>
+        <div class="relative z-10 text-center px-4 fade-in-up">
+            <p class="text-accent text-lg md:text-xl tracking-widest mb-4 font-light">6 DAYS 5 NIGHTS SELF-DRIVE TOUR</p>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 glow-text">宜兴 - 湖州</h1>
+            <p class="text-xl md:text-2xl text-gray-400 mb-4">6日5晚休闲自驾行程</p>
+            <p class="text-gray-500 mb-8">9人团队 · 6老 + 2大 + 1小</p>
 
-            <div class="flex flex-wrap justify-center gap-4 mb-16">
-                <div class="mini-card px-6 py-3 rounded-full">
-                    <span class="text-[#00AEEF] font-bold"><i class="fas fa-car mr-2"></i>2 辆车 · 轮流驾驶</span>
-                </div>
-                <div class="mini-card px-6 py-3 rounded-full">
-                    <span class="text-[#00AEEF] font-bold"><i class="fas fa-hotel mr-2"></i>窑厂(3晚) + 东吴(2晚)</span>
-                </div>
-                <div class="mini-card px-6 py-3 rounded-full">
-                    <span class="text-[#00AEEF] font-bold"><i class="fas fa-route mr-2"></i>全程≤1.5h车程</span>
-                </div>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <span class="px-6 py-3 bg-card-bg border border-accent/20 rounded-full text-accent">
+                    <i class="fas fa-calendar-alt mr-2"></i>2月14日 - 2月19日
+                </span>
+                <span class="px-6 py-3 bg-card-bg border border-accent/20 rounded-full text-accent">
+                    <i class="fas fa-car mr-2"></i>2辆车
+                </span>
             </div>
 
-            <div class="scroll-indicator text-[#00AEEF]">
-                <i class="fas fa-chevron-down text-2xl"></i>
+            <a href="#overview" class="inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-accent-dark rounded-full text-black font-semibold transition-all hover:scale-105">
+                开始探索 <i class="fas fa-arrow-down"></i>
+            </a>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2">
+            <div class="w-6 h-10 border-2 border-accent/50 rounded-full flex justify-center">
+                <div class="w-1.5 h-3 bg-accent rounded-full mt-2 animate-bounce"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overview Section -->
+    <section id="overview" class="py-20 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+        <div class="text-center mb-16 fade-in-up">
+            <p class="text-accent text-sm tracking-widest mb-2">OVERVIEW</p>
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">行程总览</h2>
+            <p class="text-gray-500">Trip Overview</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <div class="mini-card rounded-2xl p-6 text-center fade-in-up">
+                <div class="text-5xl font-bold highlight-number mb-2">6</div>
+                <p class="text-lg text-gray-300">天数</p>
+                <p class="text-sm text-gray-600">Days</p>
+            </div>
+            <div class="mini-card rounded-2xl p-6 text-center fade-in-up" style="transition-delay: 0.1s;">
+                <div class="text-5xl font-bold highlight-number mb-2">585</div>
+                <p class="text-lg text-gray-300">总公里数</p>
+                <p class="text-sm text-gray-600">Total KM</p>
+            </div>
+            <div class="mini-card rounded-2xl p-6 text-center fade-in-up" style="transition-delay: 0.2s;">
+                <div class="text-5xl font-bold highlight-number mb-2">2</div>
+                <p class="text-lg text-gray-300">车辆</p>
+                <p class="text-sm text-gray-600">Vehicles</p>
+            </div>
+            <div class="mini-card rounded-2xl p-6 text-center fade-in-up" style="transition-delay: 0.3s;">
+                <div class="text-5xl font-bold highlight-number mb-2">1.5h</div>
+                <p class="text-lg text-gray-300">最长车程</p>
+                <p class="text-sm text-gray-600">Max Drive</p>
+            </div>
+        </div>
+
+        <!-- Core Highlights -->
+        <div class="main-card rounded-3xl p-8 md:p-12 fade-in-up">
+            <h3 class="text-2xl md:text-3xl font-bold mb-6 text-center">
+                <i class="fas fa-star text-accent mr-2"></i>核心亮点
+                <span class="block text-lg text-gray-500 mt-2">Core Highlights</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="text-center p-4">
+                    <i class="fas fa-train text-3xl text-accent mb-3"></i>
+                    <p class="font-semibold">窑湖小火车</p>
+                    <p class="text-sm text-gray-500">Steam Train</p>
+                </div>
+                <div class="text-center p-4">
+                    <i class="fas fa-fire text-3xl text-accent mb-3"></i>
+                    <p class="font-semibold">烟花秀</p>
+                    <p class="text-sm text-gray-500">Fireworks Show</p>
+                </div>
+                <div class="text-center p-4">
+                    <i class="fas fa-mountain text-3xl text-accent mb-3"></i>
+                    <p class="font-semibold">善卷洞溶洞</p>
+                    <p class="text-sm text-gray-500">Cave Exploration</p>
+                </div>
+                <div class="text-center p-4">
+                    <i class="fas fa-dove text-3xl text-accent mb-3"></i>
+                    <p class="font-semibold">竺山喂海鸥</p>
+                    <p class="text-sm text-gray-500">Seagull Feeding</p>
+                </div>
+                <div class="text-center p-4">
+                    <i class="fas fa-gem text-3xl text-accent mb-3"></i>
+                    <p class="font-semibold">紫砂文化体验</p>
+                    <p class="text-sm text-gray-500">Pottery Culture</p>
+                </div>
+                <div class="text-center p-4">
+                    <i class="fas fa-road text-3xl text-accent mb-3"></i>
+                    <p class="font-semibold">江南古街</p>
+                    <p class="text-sm text-gray-500">Ancient Street</p>
+                </div>
+                <div class="text-center p-4">
+                    <i class="fas fa-water text-3xl text-accent mb-3"></i>
+                    <p class="font-semibold">湿地慢逛</p>
+                    <p class="text-sm text-gray-500">Wetland Walk</p>
+                </div>
+                <div class="text-center p-4">
+                    <i class="fas fa-bed text-3xl text-accent mb-3"></i>
+                    <p class="font-semibold">休息节点</p>
+                    <p class="text-sm text-gray-500">Rest Stops</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accommodation -->
+        <div class="main-card rounded-3xl p-8 md:p-12 mt-8 fade-in-up">
+            <h3 class="text-2xl md:text-3xl font-bold mb-6 text-center">
+                <i class="fas fa-hotel text-accent mr-2"></i>住宿安排
+                <span class="block text-lg text-gray-500 mt-2">Accommodation</span>
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="mini-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="day-badge w-10 h-10 rounded-full flex items-center justify-center text-black font-bold">3</div>
+                        <div>
+                            <p class="font-semibold">宜兴窑厂度假酒店</p>
+                            <p class="text-sm text-gray-500">Yaocheng Resort Hotel</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 ml-13">2月14日-16日 · 接驳车直达窑湖小镇</p>
+                </div>
+                <div class="mini-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="day-badge w-10 h-10 rounded-full flex items-center justify-center text-black font-bold">2</div>
+                        <div>
+                            <p class="font-semibold">太湖古筝酒店</p>
+                            <p class="text-sm text-gray-500">Taihu Guzheng Hotel</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 ml-13">2月17日-18日 · 古镇核心区推窗见景</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="py-20 relative">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-                <div class="mini-card rounded-2xl p-6 text-center fade-in-up">
-                    <div class="text-5xl md:text-6xl font-black text-[#00AEEF] stat-number mb-2">6</div>
-                    <div class="text-gray-400">天数</div>
-                    <div class="text-xs text-gray-500 mt-1">DAYS</div>
-                </div>
-                <div class="mini-card rounded-2xl p-6 text-center fade-in-up">
-                    <div class="text-5xl md:text-6xl font-black text-[#00AEEF] stat-number mb-2">580</div>
-                    <div class="text-gray-400">总里程(km)</div>
-                    <div class="text-xs text-gray-500 mt-1">KILOMETERS</div>
-                </div>
-                <div class="mini-card rounded-2xl p-6 text-center fade-in-up">
-                    <div class="text-5xl md:text-6xl font-black text-[#00AEEF] stat-number mb-2">9</div>
-                    <div class="text-gray-400">家庭成员</div>
-                    <div class="text-xs text-gray-500 mt-1">MEMBERS</div>
-                </div>
-                <div class="mini-card rounded-2xl p-6 text-center fade-in-up">
-                    <div class="text-5xl md:text-6xl font-black text-[#00AEEF] stat-number mb-2">18</div>
-                    <div class="text-gray-400">餐饮备选</div>
-                    <div class="text-xs text-gray-500 mt-1">RESTAURANTS</div>
-                </div>
-                <div class="mini-card rounded-2xl p-6 text-center fade-in-up">
-                    <div class="text-5xl md:text-6xl font-black text-[#00AEEF] stat-number mb-2">15+</div>
-                    <div class="text-gray-400">精选景点</div>
-                    <div class="text-xs text-gray-500 mt-1">ATTRACTIONS</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Trip Overview -->
-    <section class="py-20">
-        <div class="container mx-auto px-6">
+    <!-- Daily Itinerary Section -->
+    <section class="py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-b from-black to-gray-900/30">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 fade-in-up">
-                <p class="text-[#00AEEF] text-sm tracking-widest mb-2">OVERVIEW</p>
-                <h3 class="text-4xl font-bold">行程总览</h3>
-            </div>
-
-            <div class="card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-3xl p-8 md:p-12 fade-in-up">
-                <!-- Date & Vehicle -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="mini-card rounded-xl p-5">
-                        <div class="flex items-center mb-3">
-                            <div class="number-badge w-10 h-10 rounded-full flex items-center justify-center mr-3">
-                                <i class="fas fa-calendar-alt text-white"></i>
-                            </div>
-                            <span class="text-gray-400 text-sm">出发日期</span>
-                        </div>
-                        <div class="text-xl font-bold">2月14日-19日</div>
-                        <div class="text-xs text-gray-500 mt-1">正月初一至初三</div>
-                    </div>
-
-                    <div class="mini-card rounded-xl p-5">
-                        <div class="flex items-center mb-3">
-                            <div class="number-badge w-10 h-10 rounded-full flex items-center justify-center mr-3">
-                                <i class="fas fa-car text-white"></i>
-                            </div>
-                            <span class="text-gray-400 text-sm">车辆安排</span>
-                        </div>
-                        <div class="text-xl font-bold">2辆 · 轮流驾驶</div>
-                        <div class="text-xs text-gray-500 mt-1">配对讲机联动</div>
-                    </div>
-
-                    <div class="mini-card rounded-xl p-5">
-                        <div class="flex items-center mb-3">
-                            <div class="number-badge w-10 h-10 rounded-full flex items-center justify-center mr-3">
-                                <i class="fas fa-bed text-white"></i>
-                            </div>
-                            <span class="text-gray-400 text-sm">住宿安排</span>
-                        </div>
-                        <div class="text-lg font-bold">宜兴窑厂(3晚)</div>
-                        <div class="text-lg font-bold">湖州东吴(2晚)</div>
-                    </div>
-
-                    <div class="mini-card rounded-xl p-5">
-                        <div class="flex items-center mb-3">
-                            <div class="number-badge w-10 h-10 rounded-full flex items-center justify-center mr-3">
-                                <i class="fas fa-star text-white"></i>
-                            </div>
-                            <span class="text-gray-400 text-sm">核心亮点</span>
-                        </div>
-                        <div class="text-lg font-bold">小火车/烟花秀</div>
-                        <div class="text-xs text-gray-500 mt-1">溶洞/喂海鸥</div>
-                    </div>
-                </div>
-
-                <!-- Key Adjustment -->
-                <div class="mt-8 pt-8 border-t border-gray-800">
-                    <div class="flex items-center text-[#00AEEF] mb-4">
-                        <i class="fas fa-exclamation-circle mr-2"></i>
-                        <span class="font-bold text-lg">关键调整</span>
-                    </div>
-                    <p class="text-gray-300 leading-relaxed">
-                        Day1 上海出发，中午宜兴王府壹号特色菜馆(城东店)碰头吃午饭（已定），餐后再前往窑厂度假酒店
-                    </p>
-                </div>
-
-                <!-- Highlights Grid -->
-                <div class="mt-8 pt-8 border-t border-gray-800">
-                    <div class="flex items-center text-[#00AEEF] mb-4">
-                        <i class="fas fa-gem mr-2"></i>
-                        <span class="font-bold text-lg">行程特色</span>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-[#00AEEF] mr-2 mt-1"></i>
-                            <div>
-                                <div class="font-semibold">窑湖小火车</div>
-                                <div class="text-xs text-gray-500">3公里观光</div>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-[#00AEEF] mr-2 mt-1"></i>
-                            <div>
-                                <div class="font-semibold">烟花秀</div>
-                                <div class="text-xs text-gray-500">社火广场观看</div>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-[#00AEEF] mr-2 mt-1"></i>
-                            <div>
-                                <div class="font-semibold">紫砂文化</div>
-                                <div class="text-xs text-gray-500">陶二厂体验</div>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-[#00AEEF] mr-2 mt-1"></i>
-                            <div>
-                                <div class="font-semibold">善卷洞溶洞</div>
-                                <div class="text-xs text-gray-500">游船/缆车</div>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-[#00AEEF] mr-2 mt-1"></i>
-                            <div>
-                                <div class="font-semibold">竺山喂海鸥</div>
-                                <div class="text-xs text-gray-500">2月活跃期</div>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-[#00AEEF] mr-2 mt-1"></i>
-                            <div>
-                                <div class="font-semibold">江南古街</div>
-                                <div class="text-xs text-gray-500">湿地慢逛</div>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-[#00AEEF] mr-2 mt-1"></i>
-                            <div>
-                                <div class="font-semibold">铁花秀</div>
-                                <div class="text-xs text-gray-500">太湖古镇</div>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-[#00AEEF] mr-2 mt-1"></i>
-                            <div>
-                                <div class="font-semibold">大马戏</div>
-                                <div class="text-xs text-gray-500">魔境之旅</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Distance Chart -->
-    <section class="py-20">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16 fade-in-up">
-                <p class="text-[#00AEEF] text-sm tracking-widest mb-2">STATISTICS</p>
-                <h3 class="text-4xl font-bold">每日里程统计</h3>
-            </div>
-
-            <div class="card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-3xl p-8 fade-in-up">
-                <canvas id="distanceChart" height="280"></canvas>
-            </div>
-        </div>
-    </section>
-
-    <!-- Daily Itinerary -->
-    <section class="py-20">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16 fade-in-up">
-                <p class="text-[#00AEEF] text-sm tracking-widest mb-2">ITINERARY</p>
-                <h3 class="text-4xl font-bold">每日详细行程</h3>
+                <p class="text-accent text-sm tracking-widest mb-2">ITINERARY</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">每日详细行程</h2>
+                <p class="text-gray-500">Daily Itinerary</p>
             </div>
 
             <!-- Day 1 -->
-            <div class="mb-16 fade-in-up">
-                <div class="day-card card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-3xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-[#00AEEF]/20 to-transparent p-6 border-l-4 border-[#00AEEF]">
-                        <div class="flex items-center justify-between flex-wrap gap-4">
-                            <div>
-                                <span class="number-badge px-4 py-1 rounded-full text-sm font-bold">DAY 1</span>
-                                <h4 class="text-2xl font-bold mt-2">2月14日 · 上海 → 宜兴</h4>
-                                <p class="text-gray-400 text-sm mt-1">小火车 + 烟花秀</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-[#00AEEF] font-bold text-lg">215公里</div>
-                                <div class="text-xs text-gray-500">上海→王府200km → 酒店15km</div>
-                            </div>
+            <div class="main-card rounded-3xl p-6 md:p-10 mb-10 fade-in-up">
+                <div class="flex flex-wrap items-center justify-between mb-8 gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="day-badge w-16 h-16 rounded-2xl flex items-center justify-center">
+                            <span class="text-2xl font-bold text-black">1</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold">Day 1</h3>
+                            <p class="text-gray-500">2月14日 · 上海→宜兴</p>
                         </div>
                     </div>
+                    <div class="mini-card px-6 py-3 rounded-xl">
+                        <p class="text-accent font-semibold"><i class="fas fa-car mr-2"></i>215km / 3小时</p>
+                    </div>
+                </div>
 
-                    <div class="p-6">
-                        <!-- Route Info -->
-                        <div class="mini-card rounded-xl p-4 mb-6">
-                            <div class="flex items-center text-[#00AEEF] mb-2">
-                                <i class="fas fa-route mr-2"></i>
-                                <span class="font-bold">核心路程</span>
+                <p class="text-xl text-gray-300 mb-6">上海→王府壹号→窑厂度假酒店｜小火车 + 烟花秀</p>
+
+                <!-- Route Details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 1</p>
+                        <p class="font-semibold">上海 → 王府壹号</p>
+                        <p class="text-accent">200公里 · 2.5小时</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 2</p>
+                        <p class="font-semibold">王府壹号 → 酒店</p>
+                        <p class="text-accent">15公里 · 25分钟</p>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="relative pl-8 space-y-6">
+                    <div class="relative timeline-item pb-6">
+                        <div class="timeline-line"></div>
+                        <div class="mini-card rounded-xl p-4">
+                            <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+                                <span class="text-accent font-semibold">07:30-08:00</span>
+                                <span class="text-xs text-gray-500"><i class="fas fa-map-marker-alt mr-1"></i>上海指定点</span>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">上海→王府：</span>
-                                    <span>200公里，沪武高速→沪宜高速，<strong class="text-white">车程2.5小时</strong></span>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">王府→酒店：</span>
-                                    <span>15公里，宜兴城区道路，<strong class="text-white">车程25分钟</strong></span>
-                                </div>
-                            </div>
+                            <p>集合，检查车况，备温水零食，两车配对讲机，提前规划同一高速车道</p>
                         </div>
-
-                        <!-- Schedule Table -->
-                        <div class="overflow-x-auto mb-6">
-                            <table class="table-custom w-full text-sm">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left p-4">时间</th>
-                                        <th class="text-left p-4">行程安排</th>
-                                        <th class="text-left p-4">备注</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">07:30-08:00</td>
-                                        <td class="p-4">上海指定点集合，检查车况/备温水零食</td>
-                                        <td class="p-4 text-gray-400">不早出发保证睡眠，两车配对讲机</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">11:30-13:00</td>
-                                        <td class="p-4">抵达王府壹号特色菜馆(<strong class="text-white">午餐已定</strong>)</td>
-                                        <td class="p-4 text-gray-400">提前确认包厢，备老人餐(少盐少辣)</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">13:30-14:00</td>
-                                        <td class="p-4">前往窑厂度假酒店</td>
-                                        <td class="p-4 text-gray-400">车程短，老人可稍作休息</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">14:00-15:30</td>
-                                        <td class="p-4">办理入住，午休适应环境</td>
-                                        <td class="p-4 text-gray-400">酒店有接驳车直达窑湖小镇</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">16:00-17:30</td>
-                                        <td class="p-4">窑湖小镇乘坐<strong class="text-white">云上小火车</strong></td>
-                                        <td class="p-4 text-gray-400">3公里/40分钟，有老人专座</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">18:00-19:00</td>
-                                        <td class="p-4">窑湖小镇<strong class="text-white">晚餐</strong></td>
-                                        <td class="p-4 text-gray-400">3个备选均在小镇内，步行可达</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">19:30-20:00</td>
-                                        <td class="p-4">社火广场看<strong class="text-white">烟花秀</strong></td>
-                                        <td class="p-4 text-gray-400">带折叠椅/薄毯，儿童需成人陪同</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    </div>
+                    <div class="relative timeline-item pb-6">
+                        <div class="timeline-line"></div>
+                        <div class="mini-card rounded-xl p-4">
+                            <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+                                <span class="text-accent font-semibold">11:30-13:00</span>
+                                <span class="text-xs text-gray-500"><i class="fas fa-utensils mr-1"></i>王府壹号特色菜馆</span>
+                            </div>
+                            <p>午餐（已定）· 9人建议提前确认包厢，告知餐厅备老人餐（少盐少辣），菜馆有免费停车区</p>
                         </div>
+                    </div>
+                    <div class="relative timeline-item pb-6">
+                        <div class="timeline-line"></div>
+                        <div class="mini-card rounded-xl p-4">
+                            <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+                                <span class="text-accent font-semibold">14:00-15:30</span>
+                                <span class="text-xs text-gray-500"><i class="fas fa-hotel mr-1"></i>窑厂度假酒店</span>
+                            </div>
+                            <p>办理入住，午休适应环境，老人可卧床休息，儿童可在酒店庭院轻玩</p>
+                        </div>
+                    </div>
+                    <div class="relative timeline-item pb-6">
+                        <div class="timeline-line"></div>
+                        <div class="mini-card rounded-xl p-4">
+                            <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+                                <span class="text-accent font-semibold">16:00-17:30</span>
+                                <span class="text-xs text-gray-500"><i class="fas fa-train mr-1"></i>窑湖小镇</span>
+                            </div>
+                            <p>乘坐云上小火车 · 3公里/40分钟，有老人专座，酒店接驳车3分钟可达</p>
+                        </div>
+                    </div>
+                    <div class="relative timeline-item pb-6">
+                        <div class="timeline-line"></div>
+                        <div class="mini-card rounded-xl p-4">
+                            <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+                                <span class="text-accent font-semibold">18:00-19:00</span>
+                                <span class="text-xs text-gray-500"><i class="fas fa-utensils mr-1"></i>窑湖小镇</span>
+                            </div>
+                            <p>晚餐 · 3个备选均在小镇内，步行可达</p>
+                        </div>
+                    </div>
+                    <div class="relative timeline-item">
+                        <div class="mini-card rounded-xl p-4 border-accent/30">
+                            <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+                                <span class="text-accent font-semibold">19:30-20:00</span>
+                                <span class="text-xs text-gray-500"><i class="fas fa-fire mr-1"></i>社火广场</span>
+                            </div>
+                            <p>烟花秀 · 带折叠椅/薄毯，儿童需成人陪同，远离燃放区</p>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- Dinner Options -->
-                        <div class="mt-6 pt-6 border-t border-gray-800">
-                            <div class="flex items-center text-[#00AEEF] mb-4">
-                                <i class="fas fa-utensils mr-2"></i>
-                                <span class="font-bold">晚餐备选 · 窑湖小镇内（步行≤5分钟）</span>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">1. 龙窑餐厅</div>
-                                    <div class="text-sm text-gray-400 mb-2">景区核心餐厅，有包厢</div>
-                                    <div class="text-xs text-gray-500">特色菜：紫砂豆腐、雁来蕈烧肉、太湖白虾</div>
-                                </div>
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">2. 窑湖湖景茶餐厅</div>
-                                    <div class="text-sm text-gray-400 mb-2">临湖而坐，茶点+正餐</div>
-                                    <div class="text-xs text-gray-500">特色菜：茶油炒时蔬、鱼头豆腐汤、桂花糕</div>
-                                </div>
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">3. 小镇风味面馆</div>
-                                    <div class="text-sm text-gray-400 mb-2">平价简餐，上菜快</div>
-                                    <div class="text-xs text-gray-500">特色菜：鳝丝面、大排面、儿童面</div>
-                                </div>
-                            </div>
+                <!-- Dinner Options -->
+                <div class="mt-8">
+                    <h4 class="text-lg font-semibold mb-4"><i class="fas fa-utensils text-accent mr-2"></i>晚餐备选（窑湖小镇内）</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">龙窑餐厅</p>
+                            <p class="text-sm text-gray-400 mb-2">景区核心餐厅，有包厢</p>
+                            <p class="text-xs text-accent">紫砂豆腐 · 雁来蕈烧肉 · 太湖白虾</p>
+                        </div>
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">窑湖湖景茶餐厅</p>
+                            <p class="text-sm text-gray-400 mb-2">临湖而坐，茶点+正餐</p>
+                            <p class="text-xs text-accent">茶油炒时蔬 · 鱼头豆腐汤 · 桂花糕</p>
+                        </div>
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">小镇风味面馆</p>
+                            <p class="text-sm text-gray-400 mb-2">平价简餐，上菜快</p>
+                            <p class="text-xs text-accent">鳝丝面 · 大排面 · 儿童面</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Day 2 -->
-            <div class="mb-16 fade-in-up">
-                <div class="day-card card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-3xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-[#00AEEF]/20 to-transparent p-6 border-l-4 border-[#00AEEF]">
-                        <div class="flex items-center justify-between flex-wrap gap-4">
-                            <div>
-                                <span class="number-badge px-4 py-1 rounded-full text-sm font-bold">DAY 2</span>
-                                <h4 class="text-2xl font-bold mt-2">2月15日 · 陶二厂 → 蜀山古南街</h4>
-                                <p class="text-gray-400 text-sm mt-1">紫砂文化体验 · 九福楼晚餐（已定）</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-[#00AEEF] font-bold text-lg">45公里</div>
-                                <div class="text-xs text-gray-500">酒店↔陶二厂单程35km</div>
-                            </div>
+            <div class="main-card rounded-3xl p-6 md:p-10 mb-10 fade-in-up">
+                <div class="flex flex-wrap items-center justify-between mb-8 gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="day-badge w-16 h-16 rounded-2xl flex items-center justify-center">
+                            <span class="text-2xl font-bold text-black">2</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold">Day 2</h3>
+                            <p class="text-gray-500">2月15日 · 陶二厂→蜀山古南街→东坡阁</p>
                         </div>
                     </div>
+                    <div class="mini-card px-6 py-3 rounded-xl">
+                        <p class="text-accent font-semibold"><i class="fas fa-car mr-2"></i>45km / 1小时</p>
+                    </div>
+                </div>
 
-                    <div class="p-6">
-                        <!-- Route Info -->
-                        <div class="mini-card rounded-xl p-4 mb-6">
-                            <div class="flex items-center text-[#00AEEF] mb-2">
-                                <i class="fas fa-route mr-2"></i>
-                                <span class="font-bold">核心路程</span>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">酒店→陶二厂：</span>
-                                    <span>35公里，乡村道路，<strong class="text-white">车程45分钟</strong></span>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">东坡阁→酒店：</span>
-                                    <span>同程，返回休息</span>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">酒店→九福楼：</span>
-                                    <span>10公里，<strong class="text-white">车程15分钟</strong></span>
-                                </div>
-                            </div>
+                <p class="text-xl text-gray-300 mb-6">紫砂文化深度体验 · 九福楼晚餐（已定）</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 1</p>
+                        <p class="font-semibold">酒店 → 陶二厂</p>
+                        <p class="text-accent">35公里 · 45分钟</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 2</p>
+                        <p class="font-semibold">陶二厂 → 东坡阁</p>
+                        <p class="text-accent">步行 · 约600米</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 3</p>
+                        <p class="font-semibold">酒店 → 九福楼</p>
+                        <p class="text-accent">10公里 · 15分钟</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Day 2 -->
+                <div class="relative pl-8 space-y-4">
+                    <div class="relative timeline-item pb-4">
+                        <div class="timeline-line"></div>
+                        <div class="mini-card rounded-xl p-4">
+                            <span class="text-accent font-semibold">08:30-09:00</span>
+                            <p class="text-gray-300 mt-1">酒店早餐，整理随身包（带温水/小点心）</p>
                         </div>
-
-                        <!-- Schedule Table -->
-                        <div class="overflow-x-auto mb-6">
-                            <table class="table-custom w-full text-sm">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left p-4">时间</th>
-                                        <th class="text-left p-4">行程安排</th>
-                                        <th class="text-left p-4">备注</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">08:30-09:00</td>
-                                        <td class="p-4">酒店早餐，整理随身包(带温水/小点心)</td>
-                                        <td class="p-4 text-gray-400">儿童1.2米以下免费，备小饼干</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">09:30-11:30</td>
-                                        <td class="p-4">游览陶二厂(UCCA 陶美术馆)</td>
-                                        <td class="p-4 text-gray-400">有休息区，老人可坐观陶艺展示</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">11:45-13:00</td>
-                                        <td class="p-4">蜀山古南街漫步 + <strong class="text-white">午餐</strong></td>
-                                        <td class="p-4 text-gray-400">步行500米，石板路，穿防滑鞋</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">13:30-15:00</td>
-                                        <td class="p-4">游览东坡阁(东坡书院)</td>
-                                        <td class="p-4 text-gray-400">步行300米，可免费品茶，人少清幽</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">15:30-17:30</td>
-                                        <td class="p-4">返回窑厂酒店休息</td>
-                                        <td class="p-4 text-gray-400">预留2小时休息，可在酒店茶室品茶</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">18:00-20:00</td>
-                                        <td class="p-4"><strong class="text-white">九福楼大酒店晚餐（已定）</strong></td>
-                                        <td class="p-4 text-gray-400">提前确认包厢，准备老人餐</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    </div>
+                    <div class="relative timeline-item pb-4">
+                        <div class="timeline-line"></div>
+                        <div class="mini-card rounded-xl p-4">
+                            <span class="text-accent font-semibold">09:30-11:30</span>
+                            <p class="text-gray-300 mt-1">游览陶二厂（UCCA陶美术馆）· 免费停车，有休息区</p>
                         </div>
+                    </div>
+                    <div class="relative timeline-item pb-4">
+                        <div class="timeline-line"></div>
+                        <div class="mini-card rounded-xl p-4">
+                            <span class="text-accent font-semibold">11:45-13:00</span>
+                            <p class="text-gray-300 mt-1">蜀山古南街漫步+午餐 · 石板路，老人穿防滑鞋</p>
+                        </div>
+                    </div>
+                    <div class="relative timeline-item pb-4">
+                        <div class="timeline-line"></div>
+                        <div class="mini-card rounded-xl p-4">
+                            <span class="text-accent font-semibold">13:30-15:00</span>
+                            <p class="text-gray-300 mt-1">游览东坡阁（东坡书院）· 院内休息长椅，免费品茶</p>
+                        </div>
+                    </div>
+                    <div class="relative timeline-item pb-4">
+                        <div class="timeline-line"></div>
+                        <div class="mini-card rounded-xl p-4">
+                            <span class="text-accent font-semibold">15:30-17:30</span>
+                            <p class="text-gray-300 mt-1">返回酒店休息 · 可在茶室品茶聊天</p>
+                        </div>
+                    </div>
+                    <div class="relative timeline-item">
+                        <div class="mini-card rounded-xl p-4 border-accent/30">
+                            <span class="text-accent font-semibold">18:00-20:00</span>
+                            <p class="text-gray-300 mt-1">九福楼大酒店晚餐（已定）· 有电梯，老人餐（少盐少辣）</p>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- Lunch Options -->
-                        <div class="mt-6 pt-6 border-t border-gray-800">
-                            <div class="flex items-center text-[#00AEEF] mb-4">
-                                <i class="fas fa-utensils mr-2"></i>
-                                <span class="font-bold">午餐备选 · 古南街内/周边（步行≤3分钟）</span>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">1. 紫砂人家</div>
-                                    <div class="text-sm text-gray-400 mb-2">古南街老字号，正宗家常菜</div>
-                                    <div class="text-xs text-gray-500">特色菜：阳羡鱼头汤、腊味拼盘、马兰头</div>
-                                </div>
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">2. 古南街面馆</div>
-                                    <div class="text-sm text-gray-400 mb-2">苏式面，汤清味鲜</div>
-                                    <div class="text-xs text-gray-500">特色菜：焖肉面、虾仁面、儿童清汤面</div>
-                                </div>
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">3. 南街茶食铺</div>
-                                    <div class="text-sm text-gray-400 mb-2">简餐+茶点，上菜快</div>
-                                    <div class="text-xs text-gray-500">特色菜：荠菜馄饨、松子烧卖、南瓜粥</div>
-                                </div>
-                            </div>
+                <!-- Lunch Options Day 2 -->
+                <div class="mt-6">
+                    <h4 class="text-lg font-semibold mb-4"><i class="fas fa-utensils text-accent mr-2"></i>午餐备选（古南街内）</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">紫砂人家</p>
+                            <p class="text-sm text-gray-400 mb-2">老字号，正宗宜兴家常菜</p>
+                            <p class="text-xs text-accent">阳羡鱼头汤 · 腊味拼盘 · 马兰头</p>
+                        </div>
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">古南街面馆</p>
+                            <p class="text-sm text-gray-400 mb-2">苏式面，汤清味鲜</p>
+                            <p class="text-xs text-accent">焖肉面 · 虾仁面 · 儿童清汤面</p>
+                        </div>
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">南街茶食铺</p>
+                            <p class="text-sm text-gray-400 mb-2">简餐+茶点结合</p>
+                            <p class="text-xs text-accent">荠菜大馄饨 · 松子烧卖 · 南瓜粥</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Day 3 -->
-            <div class="mb-16 fade-in-up">
-                <div class="day-card card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-3xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-[#00AEEF]/20 to-transparent p-6 border-l-4 border-[#00AEEF]">
-                        <div class="flex items-center justify-between flex-wrap gap-4">
-                            <div>
-                                <span class="number-badge px-4 py-1 rounded-full text-sm font-bold">DAY 3</span>
-                                <h4 class="text-2xl font-bold mt-2">2月16日 · 善卷洞 → 龙池山</h4>
-                                <p class="text-gray-400 text-sm mt-1">溶洞奇观 · 龙隐江南晚餐（已定）</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-[#00AEEF] font-bold text-lg">35公里</div>
-                                <div class="text-xs text-gray-500">酒店→善卷20km → 龙池15km</div>
-                            </div>
+            <div class="main-card rounded-3xl p-6 md:p-10 mb-10 fade-in-up">
+                <div class="flex flex-wrap items-center justify-between mb-8 gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="day-badge w-16 h-16 rounded-2xl flex items-center justify-center">
+                            <span class="text-2xl font-bold text-black">3</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold">Day 3</h3>
+                            <p class="text-gray-500">2月16日 · 善卷洞→龙池山自行车公园</p>
                         </div>
                     </div>
+                    <div class="mini-card px-6 py-3 rounded-xl">
+                        <p class="text-accent font-semibold"><i class="fas fa-car mr-2"></i>35km / 55分钟</p>
+                    </div>
+                </div>
 
-                    <div class="p-6">
-                        <!-- Route Info -->
-                        <div class="mini-card rounded-xl p-4 mb-6">
-                            <div class="flex items-center text-[#00AEEF] mb-2">
-                                <i class="fas fa-route mr-2"></i>
-                                <span class="font-bold">核心路程</span>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">酒店→善卷洞：</span>
-                                    <span>20公里，景区道路，<strong class="text-white">车程30分钟</strong></span>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">善卷洞→龙池山：</span>
-                                    <span>15公里，<strong class="text-white">车程25分钟</strong></span>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">龙隐江南→酒店：</span>
-                                    <span>10公里，<strong class="text-white">车程15分钟</strong></span>
-                                </div>
-                            </div>
+                <p class="text-xl text-gray-300 mb-6">溶洞奇观 · 自然风光 · 龙隐江南晚餐（已定）</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 1</p>
+                        <p class="font-semibold">酒店 → 善卷洞</p>
+                        <p class="text-accent">20公里 · 30分钟</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 2</p>
+                        <p class="font-semibold">善卷洞 → 龙池山</p>
+                        <p class="text-accent">15公里 · 25分钟</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 3</p>
+                        <p class="font-semibold">餐厅 → 酒店</p>
+                        <p class="text-accent">10公里 · 15分钟</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Day 3 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-clock text-accent"></i>
+                            <span class="text-accent font-semibold">08:30-09:00</span>
                         </div>
-
-                        <!-- Schedule Table -->
-                        <div class="overflow-x-auto mb-6">
-                            <table class="table-custom w-full text-sm">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left p-4">时间</th>
-                                        <th class="text-left p-4">行程安排</th>
-                                        <th class="text-left p-4">备注</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">08:30-09:00</td>
-                                        <td class="p-4">酒店早餐，准备溶洞用品(薄外套，洞内23℃)</td>
-                                        <td class="p-4 text-gray-400">老人带轻便外套，儿童备小水壶</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">09:30-12:00</td>
-                                        <td class="p-4">游览<strong class="text-white">善卷洞</strong></td>
-                                        <td class="p-4 text-gray-400">可乘游船/缆车，多休息点</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">12:15-13:30</td>
-                                        <td class="p-4">善卷洞景区外<strong class="text-white">午餐</strong></td>
-                                        <td class="p-4 text-gray-400">3个备选在P2停车场附近，停车方便</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">14:00-15:30</td>
-                                        <td class="p-4">龙池山自行车公园轻逛</td>
-                                        <td class="p-4 text-gray-400">可租多人自行车，老人可在茶园步道散步</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">18:00-20:00</td>
-                                        <td class="p-4"><strong class="text-white">龙隐江南·土灶农家菜晚餐（已定）</strong></td>
-                                        <td class="p-4 text-gray-400">可要求少盐，有儿童座椅</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">20:30</td>
-                                        <td class="p-4">返回窑厂酒店入住</td>
-                                        <td class="p-4 text-gray-400">为次日湖州行程储备体力</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <p>酒店早餐，准备溶洞用品（薄外套，洞内23℃）</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-mountain text-accent"></i>
+                            <span class="text-accent font-semibold">09:30-12:00</span>
                         </div>
+                        <p>游览善卷洞 · 可乘游船/缆车，多处休息点</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-utensils text-accent"></i>
+                            <span class="text-accent font-semibold">12:15-13:30</span>
+                        </div>
+                        <p>善卷洞景区外午餐 · 3个备选，停车方便</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-bicycle text-accent"></i>
+                            <span class="text-accent font-semibold">14:00-15:30</span>
+                        </div>
+                        <p>龙池山自行车公园 · 多人自行车，茶园步道</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4 border-accent/30">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-dinner text-accent"></i>
+                            <span class="text-accent font-semibold">18:00-20:00</span>
+                        </div>
+                        <p>龙隐江南土灶农家菜晚餐（已定）· 少盐，儿童座椅</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-bed text-accent"></i>
+                            <span class="text-accent font-semibold">20:30</span>
+                        </div>
+                        <p>返回窑厂酒店 · 为次日湖州行程储备体力</p>
+                    </div>
+                </div>
 
-                        <!-- Lunch Options -->
-                        <div class="mt-6 pt-6 border-t border-gray-800">
-                            <div class="flex items-center text-[#00AEEF] mb-4">
-                                <i class="fas fa-utensils mr-2"></i>
-                                <span class="font-bold">午餐备选 · 善卷洞景区周边（步行≤3分钟）</span>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">1. 山之源·特色农家菜</div>
-                                    <div class="text-sm text-gray-400 mb-2">P2停车场旁，免费停车，有打卡礼品</div>
-                                    <div class="text-xs text-gray-500">特色菜：土鸡汤、笋干烧肉、太湖莼菜</div>
-                                </div>
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">2. 螺岩山酒店餐厅</div>
-                                    <div class="text-sm text-gray-400 mb-2">有电梯，环境整洁，包厢宽敞</div>
-                                    <div class="text-xs text-gray-500">特色菜：清蒸鲈鱼、太湖白虾、娃娃菜</div>
-                                </div>
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">3. 善卷洞小吃铺</div>
-                                    <div class="text-sm text-gray-400 mb-2">平价简餐，无油腻菜品</div>
-                                    <div class="text-xs text-gray-500">特色菜：宜兴咸粥、鲜肉蒸饺、番茄炒蛋盖饭</div>
-                                </div>
-                            </div>
+                <!-- Lunch Options Day 3 -->
+                <div class="mt-6">
+                    <h4 class="text-lg font-semibold mb-4"><i class="fas fa-utensils text-accent mr-2"></i>午餐备选（善卷洞景区周边）</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">山之源农家菜</p>
+                            <p class="text-sm text-gray-400 mb-2">P2停车场旁，免费停车</p>
+                            <p class="text-xs text-accent">善卷土鸡汤 · 笋干烧肉 · 太湖莼菜</p>
+                        </div>
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">螺岩山酒店餐厅</p>
+                            <p class="text-sm text-gray-400 mb-2">有电梯，包厢宽敞</p>
+                            <p class="text-xs text-accent">清蒸鲈鱼 · 太湖白虾 · 娃娃菜</p>
+                        </div>
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">善卷洞小吃铺</p>
+                            <p class="text-sm text-gray-400 mb-2">平价简餐，上菜快</p>
+                            <p class="text-xs text-accent">宜兴咸粥 · 鲜肉蒸饺 · 番茄炒蛋</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Day 4 -->
-            <div class="mb-16 fade-in-up">
-                <div class="day-card card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-3xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-[#00AEEF]/20 to-transparent p-6 border-l-4 border-[#00AEEF]">
-                        <div class="flex items-center justify-between flex-wrap gap-4">
-                            <div>
-                                <span class="number-badge px-4 py-1 rounded-full text-sm font-bold">DAY 4</span>
-                                <h4 class="text-2xl font-bold mt-2">2月17日 · 竺山喂海鸥 → 太湖古镇</h4>
-                                <p class="text-gray-400 text-sm mt-1">正月初一 · 铁花秀 + 烟花秀（两场）</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-[#00AEEF] font-bold text-lg">130公里</div>
-                                <div class="text-xs text-gray-500">竺山40km → 太湖古镇90km</div>
-                            </div>
+            <div class="main-card rounded-3xl p-6 md:p-10 mb-10 fade-in-up">
+                <div class="flex flex-wrap items-center justify-between mb-8 gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="day-badge w-16 h-16 rounded-2xl flex items-center justify-center">
+                            <span class="text-2xl font-bold text-black">4</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold">Day 4</h3>
+                            <p class="text-gray-500">2月17日（正月初一）· 竺山书院→太湖古镇</p>
                         </div>
                     </div>
+                    <div class="mini-card px-6 py-3 rounded-xl">
+                        <p class="text-accent font-semibold"><i class="fas fa-car mr-2"></i>130km / 2小时</p>
+                    </div>
+                </div>
 
-                    <div class="p-6">
-                        <!-- Route Info -->
-                        <div class="mini-card rounded-xl p-4 mb-6">
-                            <div class="flex items-center text-[#00AEEF] mb-2">
-                                <i class="fas fa-route mr-2"></i>
-                                <span class="font-bold">核心路程</span>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">窑厂酒店→竺山书院：</span>
-                                    <span>40公里，<strong class="text-white">车程50分钟</strong></span>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">竺山书院→太湖古镇：</span>
-                                    <span>90公里，长深高速，<strong class="text-white">车程1.5小时</strong></span>
-                                </div>
-                            </div>
-                            <div class="text-xs text-gray-500 mt-2">每1小时停靠服务区休息一次</div>
+                <p class="text-xl text-gray-300 mb-6">喂海鸥 · 太湖古镇 · 打铁花 + 烟花秀</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 1</p>
+                        <p class="font-semibold">窑厂酒店 → 竺山书院</p>
+                        <p class="text-accent">40公里 · 50分钟</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 2</p>
+                        <p class="font-semibold">竺山书院 → 太湖古镇酒店</p>
+                        <p class="text-accent">90公里 · 1.5小时</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Day 4 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-sun text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">08:00-08:30</span>
                         </div>
-
-                        <!-- Schedule Table -->
-                        <div class="overflow-x-auto mb-6">
-                            <table class="table-custom w-full text-sm">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left p-4">时间</th>
-                                        <th class="text-left p-4">行程安排</th>
-                                        <th class="text-left p-4">备注</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">08:00-08:30</td>
-                                        <td class="p-4">窑厂酒店早餐，退房整理行李</td>
-                                        <td class="p-4 text-gray-400">备面包碎(喂海鸥)、防风外套</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">09:00-10:30</td>
-                                        <td class="p-4">前往<strong class="text-white">竺山书院喂海鸥</strong></td>
-                                        <td class="p-4 text-gray-400">老人可坐石凳喂食，有休息亭</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">10:30-12:00</td>
-                                        <td class="p-4">竺山书院轻逛 + 拍照</td>
-                                        <td class="p-4 text-gray-400">2月海鸥活跃度高，适合全家合影</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">12:30-13:30</td>
-                                        <td class="p-4">周铁镇<strong class="text-white">午餐</strong>（3选）</td>
-                                        <td class="p-4 text-gray-400">主打清淡太湖菜，适配老幼</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">14:00-15:30</td>
-                                        <td class="p-4">前往太湖古镇酒店</td>
-                                        <td class="p-4 text-gray-400">全程高速+度假区道路，服务区多</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">15:30-16:00</td>
-                                        <td class="p-4">办理入住，午休调整</td>
-                                        <td class="p-4 text-gray-400">推窗可见古镇街景，有电梯</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">16:30-18:00</td>
-                                        <td class="p-4">太湖古镇轻逛 + 街头国潮秀</td>
-                                        <td class="p-4 text-gray-400">免费舞狮/快闪，老人可坐街边座椅</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">18:00-19:00</td>
-                                        <td class="p-4">古镇<strong class="text-white">晚餐</strong>（3选）</td>
-                                        <td class="p-4 text-gray-400">步行≤3分钟，支持调整口味</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">19:00-19:17</td>
-                                        <td class="p-4">第一场《太湖铁花秀×烟花秀》(含低空)</td>
-                                        <td class="p-4 text-gray-400">酒店步行5分钟，软座椅</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">20:30-20:50</td>
-                                        <td class="p-4"><strong class="text-white">第二场《铁花秀×烟花秀》</strong>(加量版)</td>
-                                        <td class="p-4 text-gray-400">初一加长版，低空+高空烟花</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">21:00-21:30</td>
-                                        <td class="p-4">古镇夜景漫步</td>
-                                        <td class="p-4 text-gray-400">灯光秀+免费散点打铁花</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <p class="text-sm">窑厂酒店早餐，退房，备面包碎（喂海鸥）、防风外套</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-dove text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">09:00-10:30</span>
                         </div>
+                        <p class="text-sm">竺山书院喂海鸥 · 老人可坐石凳喂食</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-camera text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">10:30-12:00</span>
+                        </div>
+                        <p class="text-sm">竺山书院轻逛+拍照 · 2月海鸥活跃度高</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-utensils text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">12:30-13:30</span>
+                        </div>
+                        <p class="text-sm">周铁镇午餐 · 3选，清淡太湖菜</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-car text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">14:00-15:30</span>
+                        </div>
+                        <p class="text-sm">前往太湖古镇酒店 · 每小时停靠服务区</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-hotel text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">15:30-16:00</span>
+                        </div>
+                        <p class="text-sm">办理入住，午休 · 推窗见古镇街景</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-walking text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">16:30-18:00</span>
+                        </div>
+                        <p class="text-sm">太湖古镇轻逛 · 街头国潮秀</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4 border-accent/30">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-fire-alt text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">19:00-20:50</span>
+                        </div>
+                        <p class="text-sm">太湖铁花秀×烟花秀 · 两场！</p>
+                    </div>
+                </div>
 
-                        <!-- Lunch & Dinner Options -->
-                        <div class="mt-6 pt-6 border-t border-gray-800">
-                            <div class="flex items-center text-[#00AEEF] mb-4">
-                                <i class="fas fa-utensils mr-2"></i>
-                                <span class="font-bold">餐饮备选</span>
-                            </div>
-
-                            <div class="mb-4">
-                                <div class="text-sm text-gray-400 mb-2">周铁镇午餐（步行≤5分钟）</div>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div class="restaurant-card rounded-xl p-3">
-                                        <div class="text-sm"><span class="text-white">太湖饭庄</span> / <span class="text-white">竺山湖鲜馆</span> / <span class="text-white">周铁家常面馆</span></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="text-sm text-gray-400 mb-2">古镇晚餐（酒店周边，步行≤3分钟）</div>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div class="restaurant-card rounded-xl p-4">
-                                        <div class="font-bold text-[#00AEEF] mb-2">1. 古镇老湖州菜馆</div>
-                                        <div class="text-xs text-gray-500">湖州酱鸭、半汤花鲢、烂糊鳝丝</div>
-                                    </div>
-                                    <div class="restaurant-card rounded-xl p-4">
-                                        <div class="font-bold text-[#00AEEF] mb-2">2. 太湖小吃铺</div>
-                                        <div class="text-xs text-gray-500">馄饨、面、桂花糕</div>
-                                    </div>
-                                    <div class="restaurant-card rounded-xl p-4">
-                                        <div class="font-bold text-[#00AEEF] mb-2">3. 龙之梦国际大酒店</div>
-                                        <div class="text-xs text-gray-500">清蒸白鱼、虾饺皇、娃娃菜</div>
-                                    </div>
-                                </div>
-                            </div>
+                <!-- Day 4 Dinner Options -->
+                <div class="mt-6">
+                    <h4 class="text-lg font-semibold mb-4"><i class="fas fa-utensils text-accent mr-2"></i>晚餐备选（太湖古镇酒店周边）</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">古镇老湖州菜馆</p>
+                            <p class="text-sm text-gray-400 mb-2">本地老字号，湖州本帮菜</p>
+                            <p class="text-xs text-accent">湖州酱鸭 · 半汤花鲢 · 烂糊鳝丝</p>
+                        </div>
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">太湖小吃铺</p>
+                            <p class="text-sm text-gray-400 mb-2">平价简餐，清淡易消化</p>
+                            <p class="text-xs text-accent">鲜肉大馄饨 · 青菜肉丝面 · 桂花糕</p>
+                        </div>
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">龙之梦国际大酒店</p>
+                            <p class="text-sm text-gray-400 mb-2">湖鲜+粤菜，环境雅致</p>
+                            <p class="text-xs text-accent">清蒸太湖白鱼 · 虾饺皇 · 娃娃菜</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Day 5 -->
-            <div class="mb-16 fade-in-up">
-                <div class="day-card card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-3xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-[#00AEEF]/20 to-transparent p-6 border-l-4 border-[#00AEEF]">
-                        <div class="flex items-center justify-between flex-wrap gap-4">
-                            <div>
-                                <span class="number-badge px-4 py-1 rounded-full text-sm font-bold">DAY 5</span>
-                                <h4 class="text-2xl font-bold mt-2">2月18日 · 龙之梦度假区</h4>
-                                <p class="text-gray-400 text-sm mt-1">正月初二 · 大马戏/冰雪世界/动物世界</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-[#00AEEF] font-bold text-lg">0公里</div>
-                                <div class="text-xs text-gray-500">度假区内活动</div>
-                            </div>
+            <div class="main-card rounded-3xl p-6 md:p-10 mb-10 fade-in-up">
+                <div class="flex flex-wrap items-center justify-between mb-8 gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="day-badge w-16 h-16 rounded-2xl flex items-center justify-center">
+                            <span class="text-2xl font-bold text-black">5</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold">Day 5</h3>
+                            <p class="text-gray-500">2月18日（正月初二）· 龙之梦度假区内</p>
                         </div>
                     </div>
+                    <div class="mini-card px-6 py-3 rounded-xl bg-accent/10">
+                        <p class="text-accent font-semibold"><i class="fas fa-walking mr-2"></i>全程度假区内活动</p>
+                    </div>
+                </div>
 
-                    <div class="p-6">
-                        <div class="mini-card rounded-xl p-4 mb-6">
-                            <div class="flex items-center text-[#00AEEF] mb-2">
-                                <i class="fas fa-star mr-2"></i>
-                                <span class="font-bold">全程度假区内活动 · 步行/接驳车可达 · 无长途奔波</span>
-                            </div>
+                <p class="text-xl text-gray-300 mb-6">大马戏 · 冰雪世界 · 动物世界 · 无长途奔波</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-horse text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">10:00-11:25</span>
                         </div>
+                        <p class="text-sm"><strong>龙之梦大马戏·魔境之旅</strong><br>初二四场之一，软座椅舒适</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-snowflake text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">13:00-14:30</span>
+                        </div>
+                        <p class="text-sm"><strong>冰雪世界轻体验</strong><br>室内恒温18℃，看冰雕秀</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-paw text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">14:30-16:00</span>
+                        </div>
+                        <p class="text-sm"><strong>动物世界演艺</strong><br>接驳车10分钟，大象表演</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-mug-hot text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">16:30-18:00</span>
+                        </div>
+                        <p class="text-sm"><strong>酒店休息+下午茶</strong><br>大堂免费茶点，品茶聊天</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-utensils text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">18:00-19:00</span>
+                        </div>
+                        <p class="text-sm"><strong>古镇晚餐</strong><br>步行≤3分钟，3选</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4 border-accent/30">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-music text-accent"></i>
+                            <span class="text-accent font-semibold text-sm">19:00-20:00</span>
+                        </div>
+                        <p class="text-sm"><strong>龙之梦狂欢音乐秀</strong><br>乐队演出+互动游戏</p>
+                    </div>
+                </div>
 
-                        <!-- Schedule Table -->
-                        <div class="overflow-x-auto mb-6">
-                            <table class="table-custom w-full text-sm">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left p-4">时间</th>
-                                        <th class="text-left p-4">行程安排</th>
-                                        <th class="text-left p-4">备注</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">08:30-09:30</td>
-                                        <td class="p-4">酒店自助早餐</td>
-                                        <td class="p-4 text-gray-400">有儿童餐区，老人可选粥/软食</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">10:00-11:25</td>
-                                        <td class="p-4"><strong class="text-white">《龙之梦大马戏·魔境之旅》</strong></td>
-                                        <td class="p-4 text-gray-400">剧场步行8分钟，软座椅舒适</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">11:30-12:30</td>
-                                        <td class="p-4">古镇<strong class="text-white">午餐</strong>（3选，同Day4晚餐备选）</td>
-                                        <td class="p-4 text-gray-400">步行≤3分钟，避免暴晒</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">13:00-14:30</td>
-                                        <td class="p-4"><strong class="text-white">冰雪世界</strong>轻体验</td>
-                                        <td class="p-4 text-gray-400">室内恒温18℃，看冰雕秀+冰雪演艺</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">14:30-16:00</td>
-                                        <td class="p-4"><strong class="text-white">动物世界</strong>演艺及科普秀</td>
-                                        <td class="p-4 text-gray-400">接驳车10分钟，看大象表演/鹦鹉互动</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">16:30-18:00</td>
-                                        <td class="p-4">酒店休息 + 下午茶</td>
-                                        <td class="p-4 text-gray-400">大堂提供免费茶点，老人可品茶聊天</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">18:00-19:00</td>
-                                        <td class="p-4">古镇<strong class="text-white">晚餐</strong>（3选）</td>
-                                        <td class="p-4 text-gray-400">步行≤3分钟，可选土灶菜/湖鲜/简餐</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">19:00-20:00</td>
-                                        <td class="p-4"><strong class="text-white">龙之梦狂欢音乐秀</strong></td>
-                                        <td class="p-4 text-gray-400">音乐广场步行5分钟，乐队演出+互动</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <!-- Resort Info -->
+                <div class="mini-card rounded-xl p-6 bg-accent/5">
+                    <h4 class="font-semibold mb-4"><i class="fas fa-info-circle text-accent mr-2"></i>度假区内交通</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div>
+                            <p class="text-2xl font-bold text-accent">5'</p>
+                            <p class="text-sm text-gray-400">→ 铁花秀演艺城</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-accent">8'</p>
+                            <p class="text-sm text-gray-400">→ 大马戏剧场</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-accent">10'</p>
+                            <p class="text-sm text-gray-400">→ 冰雪世界</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-accent">10'</p>
+                            <p class="text-sm text-gray-400">→ 动物世界（接驳车）</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Day 6 -->
-            <div class="mb-16 fade-in-up">
-                <div class="day-card card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-3xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-[#00AEEF]/20 to-transparent p-6 border-l-4 border-[#00AEEF]">
-                        <div class="flex items-center justify-between flex-wrap gap-4">
-                            <div>
-                                <span class="number-badge px-4 py-1 rounded-full text-sm font-bold">DAY 6</span>
-                                <h4 class="text-2xl font-bold mt-2">2月19日 · 湖州影视城 → 上海</h4>
-                                <p class="text-gray-400 text-sm mt-1">正月初三 · 返程</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-[#00AEEF] font-bold text-lg">180公里</div>
-                                <div class="text-xs text-gray-500">影视城30km → 上海150km</div>
-                            </div>
+            <div class="main-card rounded-3xl p-6 md:p-10 mb-10 fade-in-up">
+                <div class="flex flex-wrap items-center justify-between mb-8 gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="day-badge w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-gray-600 to-gray-800">
+                            <span class="text-2xl font-bold text-white">6</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold">Day 6</h3>
+                            <p class="text-gray-500">2月19日（正月初三）· 湖州影视城→上海</p>
                         </div>
                     </div>
+                    <div class="mini-card px-6 py-3 rounded-xl">
+                        <p class="text-accent font-semibold"><i class="fas fa-car mr-2"></i>180km / 3小时</p>
+                    </div>
+                </div>
 
-                    <div class="p-6">
-                        <!-- Route Info -->
-                        <div class="mini-card rounded-xl p-4 mb-6">
-                            <div class="flex items-center text-[#00AEEF] mb-2">
-                                <i class="fas fa-route mr-2"></i>
-                                <span class="font-bold">返程路线</span>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">太湖古镇→影视城：</span>
-                                    <span>30公里，<strong class="text-white">车程40分钟</strong></span>
-                                </div>
-                                <div class="flex items-start">
-                                    <span class="text-gray-400 mr-2">影视城→上海：</span>
-                                    <span>150公里，沪渝高速，<strong class="text-white">车程2-2.5小时</strong></span>
-                                </div>
-                            </div>
-                            <div class="text-xs text-gray-500 mt-2">返程建议10点前出发错峰，每1小时停靠服务区活动筋骨</div>
+                <p class="text-xl text-gray-300 mb-6">民国风情 · 影视城打卡 · 返程上海</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 1</p>
+                        <p class="font-semibold">太湖古镇酒店 → 湖州影视城</p>
+                        <p class="text-accent">30公里 · 40分钟</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <p class="text-sm text-gray-500 mb-1">Route 2</p>
+                        <p class="font-semibold">湖州影视城 → 上海</p>
+                        <p class="text-accent">150公里 · 2-2.5小时</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Day 6 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-coffee text-accent"></i>
+                            <span class="text-accent font-semibold">08:30-09:30</span>
                         </div>
-
-                        <!-- Schedule Table -->
-                        <div class="overflow-x-auto mb-6">
-                            <table class="table-custom w-full text-sm">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left p-4">时间</th>
-                                        <th class="text-left p-4">行程安排</th>
-                                        <th class="text-left p-4">备注</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">08:30-09:30</td>
-                                        <td class="p-4">酒店早餐，整理行李</td>
-                                        <td class="p-4 text-gray-400">打包点心(面包/鸡蛋)备返程</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">09:30-10:10</td>
-                                        <td class="p-4">前往湖州影视城</td>
-                                        <td class="p-4 text-gray-400">车程40分钟，有免费停车场</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">10:00-11:30</td>
-                                        <td class="p-4">湖州影视城轻逛</td>
-                                        <td class="p-4 text-gray-400">民国风情街、城楼广场，可坐观光车</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">11:30-12:30</td>
-                                        <td class="p-4">影视城<strong class="text-white">午餐</strong>（3选）</td>
-                                        <td class="p-4 text-gray-400">景区入口处，避免深入景区</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">12:30-13:00</td>
-                                        <td class="p-4">返程准备</td>
-                                        <td class="p-4 text-gray-400">出口直接衔接沪渝高速，无需绕路</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">13:00-15:30</td>
-                                        <td class="p-4"><strong class="text-white">返程回上海</strong></td>
-                                        <td class="p-4 text-gray-400">每1小时停靠服务区一次</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-4 text-[#00AEEF] font-semibold">15:30前</td>
-                                        <td class="p-4">抵达上海，结束行程</td>
-                                        <td class="p-4 text-gray-400">避开高峰，避免夜间行车</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <p>酒店早餐，整理行李，打包点心备返程</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-film text-accent"></i>
+                            <span class="text-accent font-semibold">10:00-11:30</span>
                         </div>
+                        <p>湖州影视城轻逛 · 民国风情街+城楼广场</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-utensils text-accent"></i>
+                            <span class="text-accent font-semibold">11:30-12:30</span>
+                        </div>
+                        <p>影视城午餐 · 3选，景区入口处</p>
+                    </div>
+                    <div class="mini-card rounded-xl p-4 border-accent/30">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-home text-accent"></i>
+                            <span class="text-accent font-semibold">13:00-15:30</span>
+                        </div>
+                        <p>返程回上海 · 每小时停靠服务区活动筋骨</p>
+                    </div>
+                </div>
 
-                        <!-- Lunch Options -->
-                        <div class="mt-6 pt-6 border-t border-gray-800">
-                            <div class="flex items-center text-[#00AEEF] mb-4">
-                                <i class="fas fa-utensils mr-2"></i>
-                                <span class="font-bold">午餐备选 · 湖州影视城入口处</span>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">1. 民国主题餐厅</div>
-                                    <div class="text-xs text-gray-500">湖州酱鸭、清蒸白水鱼、红烧肉</div>
-                                </div>
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">2. 影视城小吃铺</div>
-                                    <div class="text-xs text-gray-500">馄饨、面、桂花糕</div>
-                                </div>
-                                <div class="restaurant-card rounded-xl p-4">
-                                    <div class="font-bold text-[#00AEEF] mb-2">3. 湖景茶餐厅</div>
-                                    <div class="text-xs text-gray-500">茶油时蔬、太湖银鱼羹、绿豆糕</div>
-                                </div>
-                            </div>
+                <!-- Day 6 Lunch Options -->
+                <div class="mt-6">
+                    <h4 class="text-lg font-semibold mb-4"><i class="fas fa-utensils text-accent mr-2"></i>午餐备选（湖州影视城入口处）</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">民国主题餐厅</p>
+                            <p class="text-sm text-gray-400 mb-2">复古装修，江南本帮菜</p>
+                            <p class="text-xs text-accent">湖州酱鸭 · 清蒸白水鱼 · 民国红烧肉</p>
+                        </div>
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">影视城小吃铺</p>
+                            <p class="text-sm text-gray-400 mb-2">平价简餐，清淡易消化</p>
+                            <p class="text-xs text-accent">鲜肉大馄饨 · 青菜肉丝面 · 桂花糕</p>
+                        </div>
+                        <div class="mini-card rounded-xl p-4">
+                            <p class="font-semibold mb-2">湖景茶餐厅</p>
+                            <p class="text-sm text-gray-400 mb-2">临太湖，茶点+简餐</p>
+                            <p class="text-xs text-accent">茶油炒时蔬 · 太湖银鱼羹 · 绿豆糕</p>
                         </div>
                     </div>
                 </div>
@@ -1055,59 +983,139 @@
         </div>
     </section>
 
-    <!-- Hotel Advantages -->
-    <section class="py-20">
-        <div class="container mx-auto px-6">
+    <!-- Statistics Section -->
+    <section class="py-20 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+        <div class="text-center mb-16 fade-in-up">
+            <p class="text-accent text-sm tracking-widest mb-2">STATISTICS</p>
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">全程里程与时间统计</h2>
+            <p class="text-gray-500">Distance & Time Statistics</p>
+        </div>
+
+        <!-- Chart -->
+        <div class="main-card rounded-3xl p-6 md:p-10 mb-10 fade-in-up">
+            <h3 class="text-xl font-semibold mb-6 text-center"><i class="fas fa-chart-bar text-accent mr-2"></i>每日行驶里程统计</h3>
+            <div class="relative" style="height: 350px;">
+                <canvas id="distanceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Distance Table -->
+        <div class="main-card rounded-3xl p-6 md:p-10 fade-in-up overflow-x-auto">
+            <h3 class="text-xl font-semibold mb-6"><i class="fas fa-road text-accent mr-2"></i>详细路段信息</h3>
+            <table class="custom-table w-full text-left">
+                <thead>
+                    <tr class="text-accent">
+                        <th class="p-4 rounded-tl-xl">路段</th>
+                        <th class="p-4">距离</th>
+                        <th class="p-4">预计时间</th>
+                        <th class="p-4 rounded-tr-xl">路况备注</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-300">
+                    <tr>
+                        <td class="p-4">上海→王府壹号</td>
+                        <td class="p-4 text-accent font-semibold">200公里</td>
+                        <td class="p-4">2.5小时</td>
+                        <td class="p-4 text-sm text-gray-500">沪武高速→沪宜高速，全程高速</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4">王府壹号→窑厂酒店</td>
+                        <td class="p-4 text-accent font-semibold">15公里</td>
+                        <td class="p-4">25分钟</td>
+                        <td class="p-4 text-sm text-gray-500">宜兴城区道路，平缓无陡坡</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4">窑厂酒店→陶二厂</td>
+                        <td class="p-4 text-accent font-semibold">35公里</td>
+                        <td class="p-4">45分钟</td>
+                        <td class="p-4 text-sm text-gray-500">乡村道路，茶园风光</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4">窑厂酒店→善卷洞</td>
+                        <td class="p-4 text-accent font-semibold">20公里</td>
+                        <td class="p-4">30分钟</td>
+                        <td class="p-4 text-sm text-gray-500">景区道路，弯道较多</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4">窑厂酒店→竺山书院</td>
+                        <td class="p-4 text-accent font-semibold">40公里</td>
+                        <td class="p-4">50分钟</td>
+                        <td class="p-4 text-sm text-gray-500">省道+乡村道路，路况平缓</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4">竺山书院→太湖古镇酒店</td>
+                        <td class="p-4 text-accent font-semibold">90公里</td>
+                        <td class="p-4">1.5小时</td>
+                        <td class="p-4 text-sm text-gray-500">长深高速，服务区多</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4">太湖古镇酒店→湖州影视城</td>
+                        <td class="p-4 text-accent font-semibold">30公里</td>
+                        <td class="p-4">40分钟</td>
+                        <td class="p-4 text-sm text-gray-500">国道+城区道路</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4">湖州影视城→上海</td>
+                        <td class="p-4 text-accent font-semibold">150公里</td>
+                        <td class="p-4">2-2.5小时</td>
+                        <td class="p-4 text-sm text-gray-500">沪渝高速，建议10点前出发</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Resort Advantages Section -->
+    <section class="py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-b from-gray-900/30 to-black">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 fade-in-up">
-                <p class="text-[#00AEEF] text-sm tracking-widest mb-2">HIGHLIGHTS</p>
-                <h3 class="text-4xl font-bold">太湖古镇酒店专属优势</h3>
+                <p class="text-accent text-sm tracking-widest mb-2">RESORT ADVANTAGES</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">太湖古镇酒店专属优势</h2>
+                <p class="text-gray-500">Taihu Ancient Town Hotel Exclusive Benefits</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-2xl p-6 fade-in-up">
-                    <div class="flex items-start">
-                        <div class="number-badge w-14 h-14 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                            <i class="fas fa-walking text-white text-2xl"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="main-card rounded-3xl p-8 fade-in-up">
+                    <div class="flex items-start gap-4">
+                        <div class="day-badge w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-walking text-xl text-black"></i>
                         </div>
-                        <div class="flex-1">
-                            <h4 class="text-xl font-bold mb-2">零车程看演出</h4>
-                            <p class="text-gray-400 text-sm leading-relaxed">打铁花、大马戏、音乐秀均步行可达，无需往返湖州城区，减少老人乘车疲劳</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-2xl p-6 fade-in-up">
-                    <div class="flex items-start">
-                        <div class="number-badge w-14 h-14 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                            <i class="fas fa-wheelchair text-white text-2xl"></i>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="text-xl font-bold mb-2">体力友好设计</h4>
-                            <p class="text-gray-400 text-sm leading-relaxed">度假区内接驳车/观光车全覆盖，景点均设休息亭+软座椅，老人可坐观无需全程步行</p>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">零车程看演出</h3>
+                            <p class="text-gray-400">打铁花、大马戏、音乐秀均步行可达，无需往返湖州城区，减少老人乘车疲劳</p>
                         </div>
                     </div>
                 </div>
-
-                <div class="card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-2xl p-6 fade-in-up">
-                    <div class="flex items-start">
-                        <div class="number-badge w-14 h-14 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                            <i class="fas fa-utensils text-white text-2xl"></i>
+                <div class="main-card rounded-3xl p-8 fade-in-up">
+                    <div class="flex items-start gap-4">
+                        <div class="day-badge w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-battery-full text-xl text-black"></i>
                         </div>
-                        <div class="flex-1">
-                            <h4 class="text-xl font-bold mb-2">餐饮选择丰富</h4>
-                            <p class="text-gray-400 text-sm leading-relaxed">古镇内从简餐到湖鲜全覆盖，步行可达，支持口味调整（少盐少辣），适配老幼需求</p>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">体力友好设计</h3>
+                            <p class="text-gray-400">度假区内接驳车/观光车全覆盖，景点均设休息亭+软座椅，老人可坐观无需全程步行</p>
                         </div>
                     </div>
                 </div>
-
-                <div class="card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-2xl p-6 fade-in-up">
-                    <div class="flex items-start">
-                        <div class="number-badge w-14 h-14 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                            <i class="fas fa-moon text-white text-2xl"></i>
+                <div class="main-card rounded-3xl p-8 fade-in-up">
+                    <div class="flex items-start gap-4">
+                        <div class="day-badge w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-utensils text-xl text-black"></i>
                         </div>
-                        <div class="flex-1">
-                            <h4 class="text-xl font-bold mb-2">夜景体验升级</h4>
-                            <p class="text-gray-400 text-sm leading-relaxed">酒店推窗即见古镇灯光秀，饭后漫步即可看免费散点打铁花，无需额外奔波</p>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">餐饮选择丰富</h3>
+                            <p class="text-gray-400">古镇内从简餐到湖鲜全覆盖，步行可达，支持口味调整（少盐少辣），适配老幼需求</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-card rounded-3xl p-8 fade-in-up">
+                    <div class="flex items-start gap-4">
+                        <div class="day-badge w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-moon text-xl text-black"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">夜景体验升级</h3>
+                            <p class="text-gray-400">酒店推窗即见古镇灯光秀，饭后漫步即可看免费散点打铁花，无需额外奔波</p>
                         </div>
                     </div>
                 </div>
@@ -1115,183 +1123,76 @@
         </div>
     </section>
 
-    <!-- Resort Transportation -->
-    <section class="py-20">
-        <div class="container mx-auto px-6">
+    <!-- Resort Internal Routes -->
+    <section class="py-20 px-4 md:px-8 lg:px-16">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 fade-in-up">
-                <p class="text-[#00AEEF] text-sm tracking-widest mb-2">RESORT INFO</p>
-                <h3 class="text-4xl font-bold">度假区内动线</h3>
-                <p class="text-gray-400 mt-2">无车程 · 步行/接驳车可达</p>
+                <p class="text-accent text-sm tracking-widest mb-2">INTERNAL ROUTES</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">度假区内动线</h2>
+                <p class="text-gray-500">Resort Internal Routes · 无车程，步行/接驳车可达</p>
             </div>
 
-            <div class="card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-3xl p-8 fade-in-up">
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between mini-card rounded-xl p-5">
-                        <div class="flex items-center flex-1">
-                            <div class="number-badge w-12 h-12 rounded-xl flex items-center justify-center mr-4">
-                                <i class="fas fa-theater-masks text-white text-lg"></i>
-                            </div>
-                            <div>
-                                <div class="font-bold">酒店 → 铁花秀演艺城</div>
-                                <div class="text-xs text-gray-500">Taihu Iron Flower Show</div>
-                            </div>
-                        </div>
-                        <div class="text-right ml-4">
-                            <span class="text-[#00AEEF] font-bold text-lg">步行 5分钟</span>
-                            <div class="text-xs text-gray-500">平缓步道，轻松可达</div>
-                        </div>
+            <div class="main-card rounded-3xl p-6 md:p-10 fade-in-up">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="mini-card rounded-2xl p-6 text-center">
+                        <div class="text-4xl font-bold text-accent mb-2">5分钟</div>
+                        <p class="font-semibold mb-1">→ 太湖铁花秀演艺城</p>
+                        <p class="text-sm text-gray-500">步行 · 平缓步道</p>
                     </div>
-
-                    <div class="flex items-center justify-between mini-card rounded-xl p-5">
-                        <div class="flex items-center flex-1">
-                            <div class="number-badge w-12 h-12 rounded-xl flex items-center justify-center mr-4">
-                                <i class="fas fa-horse text-white text-lg"></i>
-                            </div>
-                            <div>
-                                <div class="font-bold">酒店 → 大马戏剧场</div>
-                                <div class="text-xs text-gray-500">Circus Theater</div>
-                            </div>
-                        </div>
-                        <div class="text-right ml-4">
-                            <span class="text-[#00AEEF] font-bold text-lg">步行 8分钟</span>
-                            <div class="text-xs text-gray-500">沿途有休息座椅</div>
-                        </div>
+                    <div class="mini-card rounded-2xl p-6 text-center">
+                        <div class="text-4xl font-bold text-accent mb-2">8分钟</div>
+                        <p class="font-semibold mb-1">→ 龙之梦大马戏剧场</p>
+                        <p class="text-sm text-gray-500">步行 · 沿途有休息座椅</p>
                     </div>
-
-                    <div class="flex items-center justify-between mini-card rounded-xl p-5">
-                        <div class="flex items-center flex-1">
-                            <div class="number-badge w-12 h-12 rounded-xl flex items-center justify-center mr-4">
-                                <i class="fas fa-snowflake text-white text-lg"></i>
-                            </div>
-                            <div>
-                                <div class="font-bold">酒店 → 冰雪世界</div>
-                                <div class="text-xs text-gray-500">Ice & Snow World</div>
-                            </div>
-                        </div>
-                        <div class="text-right ml-4">
-                            <span class="text-[#00AEEF] font-bold text-lg">步行 10分钟</span>
-                            <div class="text-xs text-gray-500">室内恒温18℃</div>
-                        </div>
+                    <div class="mini-card rounded-2xl p-6 text-center">
+                        <div class="text-4xl font-bold text-accent mb-2">10分钟</div>
+                        <p class="font-semibold mb-1">→ 冰雪世界</p>
+                        <p class="text-sm text-gray-500">步行 · 室内恒温</p>
                     </div>
-
-                    <div class="flex items-center justify-between mini-card rounded-xl p-5">
-                        <div class="flex items-center flex-1">
-                            <div class="number-badge w-12 h-12 rounded-xl flex items-center justify-center mr-4">
-                                <i class="fas fa-paw text-white text-lg"></i>
-                            </div>
-                            <div>
-                                <div class="font-bold">酒店 → 动物世界</div>
-                                <div class="text-xs text-gray-500">Animal World</div>
-                            </div>
-                        </div>
-                        <div class="text-right ml-4">
-                            <span class="text-[#00AEEF] font-bold text-lg">接驳车 10分钟</span>
-                            <div class="text-xs text-gray-500">免费接驳，有老人专座</div>
-                        </div>
+                    <div class="mini-card rounded-2xl p-6 text-center">
+                        <div class="text-4xl font-bold text-accent mb-2">10分钟</div>
+                        <p class="font-semibold mb-1">→ 动物世界</p>
+                        <p class="text-sm text-gray-500">接驳车 · 免费有老人专座</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Mileage Details Table -->
-    <section class="py-20 pb-32">
-        <div class="container mx-auto px-6">
+    <!-- Map Section -->
+    <section class="py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-b from-black to-gray-900/30">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16 fade-in-up">
-                <p class="text-[#00AEEF] text-sm tracking-widest mb-2">ROUTE DETAILS</p>
-                <h3 class="text-4xl font-bold">全程里程明细表</h3>
+                <p class="text-accent text-sm tracking-widest mb-2">ROUTE MAP</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">行程地图</h2>
+                <p class="text-gray-500">Interactive Route Map</p>
             </div>
 
-            <div class="card-glow bg-gradient-to-br from-[#0a0a0a] to-[#111111] rounded-3xl overflow-hidden fade-in-up">
-                <div class="overflow-x-auto">
-                    <table class="table-custom w-full text-sm">
-                        <thead>
-                            <tr>
-                                <th class="text-left p-4 sticky left-0 bg-[#0a0a0a]">路段</th>
-                                <th class="text-center p-4">距离</th>
-                                <th class="text-center p-4">时间</th>
-                                <th class="text-left p-4">路况/备注</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="p-4">上海 → 王府壹号特色菜馆(城东店)</td>
-                                <td class="text-center p-4 text-[#00AEEF] font-bold">200公里</td>
-                                <td class="text-center p-4">2.5小时</td>
-                                <td class="p-4 text-gray-400">沪武高速→沪宜高速，全程高速，路况良好</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4">王府壹号 → 窑厂度假酒店</td>
-                                <td class="text-center p-4 text-[#00AEEF] font-bold">15公里</td>
-                                <td class="text-center p-4">25分钟</td>
-                                <td class="p-4 text-gray-400">宜兴城区道路，平缓无陡坡，餐后乘车不赶路</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4">窑厂度假酒店 → 陶二厂</td>
-                                <td class="text-center p-4 text-[#00AEEF] font-bold">35公里</td>
-                                <td class="text-center p-4">45分钟</td>
-                                <td class="p-4 text-gray-400">乡村道路，沿途茶园风光，少量弯道，减速慢行</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4">窑厂度假酒店 → 善卷洞</td>
-                                <td class="text-center p-4 text-[#00AEEF] font-bold">20公里</td>
-                                <td class="text-center p-4">30分钟</td>
-                                <td class="p-4 text-gray-400">景区道路，弯道较多，注意行车安全</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4">窑厂度假酒店 → 竺山书院</td>
-                                <td class="text-center p-4 text-[#00AEEF] font-bold">40公里</td>
-                                <td class="text-center p-4">50分钟</td>
-                                <td class="p-4 text-gray-400">省道+乡村道路，路况平缓，适合喂海鸥前的轻松车程</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4">竺山书院 → 太湖古镇酒店(龙之梦)</td>
-                                <td class="text-center p-4 text-[#00AEEF] font-bold">90公里</td>
-                                <td class="text-center p-4">1.5小时</td>
-                                <td class="p-4 text-gray-400">长深高速+度假区道路，全程高速，服务区多，每1小时停靠休息</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4">太湖古镇酒店 → 湖州影视城</td>
-                                <td class="text-center p-4 text-[#00AEEF] font-bold">30公里</td>
-                                <td class="text-center p-4">40分钟</td>
-                                <td class="p-4 text-gray-400">国道+城区道路，路况良好，影视城入口直接衔接高速</td>
-                            </tr>
-                            <tr>
-                                <td class="p-4">湖州影视城 → 上海</td>
-                                <td class="text-center p-4 text-[#00AEEF] font-bold">150公里</td>
-                                <td class="text-center p-4">2-2.5小时</td>
-                                <td class="p-4 text-gray-400">沪渝高速，返程建议10点前出发错峰，每1小时停靠服务区活动筋骨</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr class="border-t-2 border-[#00AEEF]/30">
-                                <td class="p-4 font-bold" colspan="4">总里程：约580公里</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+            <div class="main-card rounded-3xl p-4 md:p-8 fade-in-up">
+                <div id="map"></div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 border-t border-gray-800">
-        <div class="container mx-auto px-6 text-center">
-            <p class="text-gray-500 text-sm">
-                <i class="fas fa-heart text-[#00AEEF] mx-1"></i>
-                2026 家庭旅行 · 宜兴·湖州 6日5晚自驾
-            </p>
-            <p class="text-gray-600 text-xs mt-2">6 老 · 2 大 · 1 小 | 2月14日 - 2月19日</p>
-            <p class="text-gray-700 text-xs mt-4">正月初一 至 正月初三</p>
+    <footer class="py-12 px-4 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-gray-500 mb-2">宜兴-湖州 6日5晚休闲自驾行程</p>
+            <p class="text-gray-600 text-sm">2月14日 - 2月19日 · 9人团队（6老+2大+1小）</p>
+            <div class="flex justify-center gap-6 mt-6">
+                <span class="text-accent"><i class="fas fa-car mr-2"></i>2辆车</span>
+                <span class="text-accent"><i class="fas fa-road mr-2"></i>585公里</span>
+                <span class="text-accent"><i class="fas fa-hotel mr-2"></i>2家酒店</span>
+            </div>
+            <p class="text-gray-700 text-xs mt-8">精心规划 · 舒适出行 · 老幼皆宜</p>
         </div>
     </footer>
 
     <script>
-        // Intersection Observer for fade-in animation
+        // Intersection Observer for fade-in animations
         const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.05
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -1306,49 +1207,51 @@
             observer.observe(el);
         });
 
-        // Distance Chart
+        // Initialize Charts
         const ctx = document.getElementById('distanceChart').getContext('2d');
+
+        // Gradient for chart bars
+        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+        gradient.addColorStop(0, 'rgba(0, 174, 239, 0.8)');
+        gradient.addColorStop(1, 'rgba(0, 174, 239, 0.2)');
+
         new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
                 datasets: [{
-                    label: '每日里程 (公里)',
+                    label: '行驶里程（公里）',
                     data: [215, 45, 35, 130, 0, 180],
-                    backgroundColor: function(context) {
-                        const chart = context.chart;
-                        const {ctx, chartArea} = chart;
-                        const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                        gradient.addColorStop(0, 'rgba(0, 174, 239, 0.3)');
-                        gradient.addColorStop(1, 'rgba(0, 174, 239, 0.8)');
-                        return gradient;
-                    },
+                    backgroundColor: gradient,
                     borderColor: '#00AEEF',
                     borderWidth: 2,
-                    borderRadius: 6,
+                    borderRadius: 8,
                     borderSkipped: false
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
                     },
                     tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
                         titleColor: '#00AEEF',
-                        titleFont: { size: 14, weight: 'bold' },
-                        bodyColor: '#fff',
-                        bodyFont: { size: 13 },
-                        borderColor: 'rgba(0, 174, 239, 0.5)',
+                        bodyColor: '#ffffff',
+                        borderColor: '#00AEEF',
                         borderWidth: 1,
+                        cornerRadius: 8,
                         padding: 12,
                         displayColors: false,
                         callbacks: {
                             label: function(context) {
-                                return ' ' + context.raw + ' 公里';
+                                return context.parsed.y + ' 公里';
+                            },
+                            afterLabel: function(context) {
+                                const times = ['3小时', '1小时', '55分钟', '2小时', '度假区内', '3小时'];
+                                return '预计时间: ' + times[context.dataIndex];
                             }
                         }
                     }
@@ -1356,31 +1259,74 @@
                 scales: {
                     x: {
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.05)',
-                            drawBorder: false
+                            color: 'rgba(255, 255, 255, 0.05)'
                         },
                         ticks: {
-                            color: '#888',
-                            font: { size: 12 }
+                            color: '#9CA3AF'
                         }
                     },
                     y: {
                         beginAtZero: true,
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.05)',
-                            drawBorder: false
+                            color: 'rgba(255, 255, 255, 0.05)'
                         },
                         ticks: {
-                            color: '#888',
-                            font: { size: 12 },
+                            color: '#9CA3AF',
                             callback: function(value) {
                                 return value + ' km';
                             }
                         }
                     }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart'
                 }
             }
         });
+
+        // Initialize Map (Leaflet)
+        const map = L.map('map').setView([31.2, 119.8], 8);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Custom icon
+        const accentIcon = L.divIcon({
+            className: 'custom-marker',
+            html: `<div style="background: #00AEEF; width: 16px; height: 16px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 15px rgba(0, 174, 239, 0.6);"></div>`,
+            iconSize: [16, 16],
+            iconAnchor: [8, 8]
+        });
+
+        // Route markers
+        const locations = [
+            { name: '上海', lat: 31.2304, lng: 121.4737 },
+            { name: '宜兴（窑厂酒店）', lat: 31.3400, lng: 119.8200 },
+            { name: '陶二厂', lat: 31.2800, lng: 119.9000 },
+            { name: '善卷洞', lat: 31.2500, lng: 119.7500 },
+            { name: '竺山书院', lat: 31.3500, lng: 119.9000 },
+            { name: '太湖古镇酒店', lat: 31.1000, lng: 120.0500 },
+            { name: '湖州影视城', lat: 30.8900, lng: 120.1000 }
+        ];
+
+        locations.forEach(loc => {
+            L.marker([loc.lat, loc.lng], { icon: accentIcon })
+                .addTo(map)
+                .bindPopup(`<div style="color: #000; font-weight: bold;">${loc.name}</div>`);
+        });
+
+        // Draw route lines
+        const routeCoords = locations.map(loc => [loc.lat, loc.lng]);
+        L.polyline(routeCoords, {
+            color: '#00AEEF',
+            weight: 3,
+            opacity: 0.7,
+            dashArray: '10, 10'
+        }).addTo(map);
 
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1394,16 +1340,6 @@
                     });
                 }
             });
-        });
-
-        // Add parallax effect to hero section
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero-gradient');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-                hero.style.opacity = 1 - (scrolled * 0.002);
-            }
         });
     </script>
 </body>
