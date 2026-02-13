@@ -646,6 +646,27 @@
             }
         }
 
+        /* Route info badge */
+        .route-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 500;
+            background: rgba(0, 113, 227, 0.08);
+            color: var(--apple-blue);
+        }
+
+        @media (min-width: 768px) {
+            .route-badge {
+                font-size: 11px;
+                padding: 3px 8px;
+                border-radius: 8px;
+            }
+        }
+
         /* Hero responsive adjustments */
         .hero-title {
             font-size: 28px;
@@ -1040,44 +1061,44 @@
                             <tr>
                                 <th>时间</th>
                                 <th>行程</th>
-                                <th>备注</th>
+                                <th>路程 / 交通方式</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="font-semibold">07:00</td>
                                 <td>上海两辆车集合出发</td>
-                                <td class="text-gray-500">早出发避开高速堵车</td>
+                                <td class="text-gray-500"><span class="route-badge">200km · 2.5h · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">10:30</td>
                                 <td>抵达宜兴城区休整</td>
-                                <td class="text-gray-500">确保11:30准时入座</td>
+                                <td class="text-gray-500">-</td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">11:30</td>
                                 <td>王府壹号午餐 <span class="badge badge-primary ml-1 md:ml-2">已定</span></td>
-                                <td class="text-gray-500">湖鲜、土菜，可做清淡版</td>
+                                <td class="text-gray-500"><span class="route-badge">15km · 25min · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">13:30</td>
                                 <td>办理入住 + 午休</td>
-                                <td class="text-gray-500">老人必须休息恢复体力</td>
+                                <td class="text-gray-500">-</td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">16:00</td>
                                 <td>窑湖小镇乘坐小火车</td>
-                                <td class="text-gray-500">老人优先靠窗坐</td>
+                                <td class="text-gray-500"><span class="route-badge">步行5分钟 · 小火车</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">18:00</td>
                                 <td>舅妈烧烤晚餐 <span class="badge badge-primary ml-1 md:ml-2">已定</span></td>
-                                <td class="text-gray-500">18:30前到店，有无烟区</td>
+                                <td class="text-gray-500"><span class="route-badge">步行5分钟 · 步行</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">20:00</td>
                                 <td>观看烟花秀</td>
-                                <td class="text-gray-500">带薄外套、折叠凳</td>
+                                <td class="text-gray-500"><span class="route-badge">步行5分钟 · 步行</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1176,29 +1197,29 @@
                             <tr>
                                 <th>时间</th>
                                 <th>行程</th>
-                                <th>备注</th>
+                                <th>路程 / 交通方式</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="font-semibold">08:30</td>
                                 <td>酒店早餐</td>
-                                <td class="text-gray-500">慢慢吃，保证老人睡眠</td>
+                                <td class="text-gray-500">-</td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">11:30</td>
                                 <td>五树六花午餐 <span class="badge badge-primary ml-1 md:ml-2">已定</span></td>
-                                <td class="text-gray-500">提前告知：老人少辣、清淡</td>
+                                <td class="text-gray-500"><span class="route-badge">20km · 30min · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">13:30</td>
                                 <td>陶二厂 → 蜀山古南街 → 东坡阁</td>
-                                <td class="text-gray-500">全程平路，可随时休息</td>
+                                <td class="text-gray-500"><span class="route-badge">35km · 45min · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">17:00</td>
                                 <td>九福楼晚餐 <span class="badge badge-primary ml-1 md:ml-2">已定</span></td>
-                                <td class="text-gray-500">小年夜团圆，包厢宽敞</td>
+                                <td class="text-gray-500"><span class="route-badge">10km · 15min · 自驾</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1287,29 +1308,29 @@
                             <tr>
                                 <th>时间</th>
                                 <th>行程</th>
-                                <th>备注</th>
+                                <th>路程 / 交通方式</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="font-semibold">09:30</td>
                                 <td>善卷洞游览</td>
-                                <td class="text-gray-500">老人每逛1小时休息10分钟</td>
+                                <td class="text-gray-500"><span class="route-badge">20km · 30min · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">12:00</td>
                                 <td>山之源午餐 <span class="badge badge-primary ml-1 md:ml-2">已定</span></td>
-                                <td class="text-gray-500">正宗宜兴农家菜，免费停车</td>
+                                <td class="text-gray-500"><span class="route-badge">步行3分钟 · 步行</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">14:00</td>
                                 <td>龙池山自行车公园轻逛</td>
-                                <td class="text-gray-500">老人散步，全程平缓</td>
+                                <td class="text-gray-500"><span class="route-badge">15km · 25min · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">18:00</td>
                                 <td>龙隐江南年夜饭 <span class="badge badge-primary ml-1 md:ml-2">已定</span></td>
-                                <td class="text-gray-500">土灶煨制菜品，适配老人儿童</td>
+                                <td class="text-gray-500"><span class="route-badge">步行5分钟 · 步行</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1375,39 +1396,39 @@
                             <tr>
                                 <th>时间</th>
                                 <th>行程</th>
-                                <th>备注</th>
+                                <th>路程 / 交通方式</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="font-semibold">09:00</td>
                                 <td>竺山书院喂海鸥</td>
-                                <td class="text-gray-500">周边有休息区域</td>
+                                <td class="text-gray-500"><span class="route-badge">40km · 50min · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">12:45</td>
                                 <td>状元楼午餐 <span class="badge badge-primary ml-1 md:ml-2">已定</span></td>
-                                <td class="text-gray-500">准时到包厢，可调整口味</td>
+                                <td class="text-gray-500"><span class="route-badge">30km · 40min · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">14:30</td>
                                 <td>前往太湖古镇酒店</td>
-                                <td class="text-gray-500">高速直达，中途休息1次</td>
+                                <td class="text-gray-500"><span class="route-badge">90km · 1.5h · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">16:00</td>
                                 <td>办理入住 + 古镇闲逛</td>
-                                <td class="text-gray-500">熟悉餐厅位置，提前占位</td>
+                                <td class="text-gray-500">-</td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">18:00</td>
                                 <td>赏花台晚餐 <span class="badge badge-primary ml-1 md:ml-2">已定</span></td>
-                                <td class="text-gray-500">打铁花C位观景位</td>
+                                <td class="text-gray-500"><span class="route-badge">步行5分钟 · 步行</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">19:00/20:30</td>
                                 <td>观看打铁花 + 烟花秀</td>
-                                <td class="text-gray-500">餐厅内直接观看</td>
+                                <td class="text-gray-500"><span class="route-badge">步行5分钟 · 步行</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1463,44 +1484,44 @@
                             <tr>
                                 <th>时间</th>
                                 <th>行程</th>
-                                <th>备注</th>
+                                <th>路程 / 交通方式</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="font-semibold">08:30</td>
                                 <td>酒店早餐</td>
-                                <td class="text-gray-500">慢慢吃，开启休闲模式</td>
+                                <td class="text-gray-500">-</td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">10:00</td>
                                 <td>龙之梦大马戏</td>
-                                <td class="text-gray-500">提前10分钟入场</td>
+                                <td class="text-gray-500"><span class="route-badge">接驳车 · 免费接驳</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">11:30</td>
                                 <td>古镇午餐（6选1）</td>
-                                <td class="text-gray-500">步行≤5分钟，不用开车</td>
+                                <td class="text-gray-500"><span class="route-badge">步行≤5分钟 · 步行</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">13:00</td>
                                 <td>冰雪世界轻玩 / 非遗馆参观</td>
-                                <td class="text-gray-500">轻松游玩，不赶行程</td>
+                                <td class="text-gray-500"><span class="route-badge">接驳车 · 免费接驳</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">15:00</td>
                                 <td>酒店休息 / 古镇喝茶 / 散步</td>
-                                <td class="text-gray-500">老人充分休整，自由活动</td>
+                                <td class="text-gray-500">-</td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">18:00</td>
                                 <td>古镇晚餐（6选1）</td>
-                                <td class="text-gray-500">可换口味，不重复</td>
+                                <td class="text-gray-500"><span class="route-badge">步行≤5分钟 · 步行</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">19:00</td>
                                 <td>音乐秀 / 灯光秀 / 古镇夜景</td>
-                                <td class="text-gray-500">带好薄外套</td>
+                                <td class="text-gray-500"><span class="route-badge">步行5分钟 · 步行</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1607,34 +1628,34 @@
                             <tr>
                                 <th>时间</th>
                                 <th>行程</th>
-                                <th>备注</th>
+                                <th>路程 / 交通方式</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="font-semibold">08:30</td>
                                 <td>酒店早餐，退房</td>
-                                <td class="text-gray-500">行李装车，轻松出发</td>
+                                <td class="text-gray-500">-</td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">09:30</td>
                                 <td>古镇轻逛 / 自由活动</td>
-                                <td class="text-gray-500">悠闲休整，可购买特产</td>
+                                <td class="text-gray-500">-</td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">12:30</td>
                                 <td>LANG自由餐厅午餐+下午茶 <span class="badge badge-primary ml-1 md:ml-2">已定</span></td>
-                                <td class="text-gray-500">适合全家休整后返程</td>
+                                <td class="text-gray-500"><span class="route-badge">10km · 15min · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">14:30</td>
                                 <td>出发返回上海</td>
-                                <td class="text-gray-500">两车保持对讲</td>
+                                <td class="text-gray-500"><span class="route-badge">150km · 2-2.5h · 自驾</span></td>
                             </tr>
                             <tr>
                                 <td class="font-semibold">17:00</td>
                                 <td>平安抵达上海</td>
-                                <td class="text-gray-500">行程圆满结束</td>
+                                <td class="text-gray-500">-</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1646,7 +1667,7 @@
                     <i class="fas fa-info-circle text-blue-500 text-lg md:text-xl mt-0.5 md:mt-1"></i>
                     <div>
                         <p class="font-semibold text-gray-900 mb-1 md:mb-2 text-sm md:text-base">用餐说明</p>
-                        <p class="text-xs md:text-sm text-gray-700">午餐+下午茶已定：LANG自由餐厅 12:30，距太湖古镇酒店10公里/15分钟，环境轻松，餐食温和，主打轻食、家常菜+特色茶点。</p>
+                        <p class="text-xs md:text-sm text-gray-700">午餐+下午茶已定：LANG自由餐厅 12:30，距太湖古镇酒店10公里/15分钟，环境轻松，餐食温和，主打轻食、家常菜+特色茶点，适合全家休整后返程。</p>
                     </div>
                 </div>
             </div>
